@@ -4,6 +4,9 @@ import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 @Controller
 
 public class HomeController {
@@ -77,6 +80,35 @@ public class HomeController {
     public String showIncrease() {
         num++;
         return "숫자 : %d".formatted(num);
+    }
+
+    @GetMapping("/gugudan")
+    @ResponseBody
+    public String showgugudan(@RequestParam int a, @RequestParam int b) {
+        StringBuffer sb = new StringBuffer();
+        for(int i= a; i <= b; i++ ) {
+            for(int j=1; j<=9; j++) {
+                sb.append(i+"×"+j +" = "+ i*j +"<br>");
+            }
+        }
+        return sb.toString();
+    }
+
+    @GetMapping("/gugudan2")
+    @ResponseBody
+    public String showgugudan2(@RequestParam int dan, @RequestParam int limit) {
+        //final int dan = dan;
+        //return IntStream.rangeClosed(1, limit)
+          //      .mapToObj(i ->"%d × %d = %d".formatted(dan, i, dan * i))
+            //    .collect(Collectors.joining("<br>"));
+        return IntStream.rangeClosed(2, 9)
+                .mapToObj(i ->
+                        IntStream.rangeClosed(1,9)
+                                .mapToObj(j-> "%d * %d = %d".formatted(i, j, i*j))
+                                .collect(Collectors.joining("<br>"))
+                ).collect(Collectors.joining("<br><br>"));
+
+
     }
 
 
