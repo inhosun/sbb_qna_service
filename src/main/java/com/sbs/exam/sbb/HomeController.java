@@ -125,6 +125,18 @@ public class HomeController {
 
     }
 
+    @GetMapping("/mbti/{name}")
+    @ResponseBody
+    public String showmbti(@PathVariable String name) {
+        String rs =
+                switch(name) {
+                    case "홍길동" -> "ENFP";
+                    case "홍길순" -> "FNFP";
+                    default -> "모름";
+                };
+        return rs;
+    }
+
 
 
 }
