@@ -1,11 +1,21 @@
 package com.sbs.exam.sbb;
 
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 
 public class HomeController {
+
+    private int num;
+
+    private HomeController homeController;
+
+    public HomeController getHomeController() {
+        return new HomeController();
+    }
+
     @RequestMapping("/sbb")
     @ResponseBody
     public String showHome() {
@@ -50,4 +60,25 @@ public class HomeController {
                 """.formatted(age);
 
     }
+
+    @GetMapping("/plus")
+    @ResponseBody
+    public String showplus(@RequestParam(defaultValue = "0") int a, @RequestParam(defaultValue = "0") int b) {
+        return "합계 : %d".formatted(a + b);
+    }
+
+    @GetMapping("/minus")
+    @ResponseBody
+    public String showminus(@RequestParam(defaultValue = "0") int a, @RequestParam(defaultValue = "0") int b) {
+        return "합계 : %d".formatted(b - a);
+    }
+    @GetMapping("/increase")
+    @ResponseBody
+    public String showIncrease() {
+        num++;
+        return "숫자 : %d".formatted(num);
+    }
+
+
+
 }
