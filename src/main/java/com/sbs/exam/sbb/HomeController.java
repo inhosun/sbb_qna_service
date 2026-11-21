@@ -26,10 +26,11 @@ public class HomeController {
 
     private int num;
 
-    private HomeController homeController;
+    private List<Article> articles;
 
-    public HomeController getHomeController() {
-        return new HomeController();
+    public HomeController() {
+        this.num = -1;
+        this.articles = new ArrayList<>();
     }
 
     @RequestMapping("/sbb")
@@ -278,6 +279,20 @@ public class HomeController {
 
         return animalV2List;
     }
+
+    @GetMapping("/home/addArticle")
+    @ResponseBody
+    public String addArticle(String title, String body) {
+        Article article = new Article(title, body);
+        articles.add(article);
+        return "%d 게시물이 추가 되었습니다".formatted(article.getId());
+    }
+
+    @GetMapping("/home/getArticles")
+    @ResponseBody
+    public List<Article> getArticles() {
+        return articles;
+    }
 }
 
 
@@ -315,5 +330,24 @@ class AnimalV2 {
     private  int age;
     private  String name;
     private  List related;
+
+}
+
+@AllArgsConstructor
+@Data
+@ToString
+class Article {
+    private static int lastId;
+    private int id;
+    private String title;
+    private String body;
+
+    static {
+        lastId = 0;
+    }
+
+    public Article(String title, String body) {
+        this(++lastId, title, body);
+    }
 
 }
