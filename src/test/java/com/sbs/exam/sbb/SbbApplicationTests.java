@@ -41,8 +41,32 @@ class SbbApplicationTests {
 	void testJpa() {
 		List<Question> questionList = questionRepository.findAll();
 		assertEquals(2, questionList.size());
-
 		assertEquals("제목12", questionList.get(0).getSubject());
+
+	}
+
+	@Test
+	void testJpa2() {
+		String subject ="제목2";
+		Question question = questionRepository.findBySubject(subject);
+		System.out.println("question.getSubject() ::" + question.getSubject());
+		assertEquals("제목2", question.getSubject());
+
+	}
+
+	@Test
+	void testJpa3() {
+		String content ="내용2";
+		Question question = questionRepository.findByContent(content);
+		assertEquals("내용2", question.getContent());
+
+	}
+
+	@Test
+	void testJpa4() {
+
+		Question question = questionRepository.findBySubjectAndContent("제목1", "내용1");
+		assertEquals("제목1", question.getSubject());
 
 	}
 }
