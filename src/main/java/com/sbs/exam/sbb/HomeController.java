@@ -337,6 +337,24 @@ public class HomeController {
 
         return "%d 게시물이 수정 되었습니다".formatted(article.getId());
     }
+
+    @GetMapping("/article/delete/{id}")
+    @ResponseBody
+    public String removeArticle(@PathVariable int id) {
+
+        /*
+        Article article = articles.stream()
+                .filter(s-> s.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        articles.remove(article);
+        */
+        boolean deleted =articles
+                .removeIf(s->s.getId() == id);
+        return deleted ? "%d 게시물이 삭제 되었습니다".formatted(id) : "%d 게시물은 존재하지 않습니다".formatted(id);
+    }
+
 }
 
 
