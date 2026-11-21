@@ -2,6 +2,10 @@ package com.sbs.exam.sbb;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.ToString;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
@@ -9,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -128,15 +136,184 @@ public class HomeController {
     @GetMapping("/mbti/{name}")
     @ResponseBody
     public String showmbti(@PathVariable String name) {
-        String rs =
-                switch(name) {
-                    case "홍길동" -> "ENFP";
-                    case "홍길순" -> "FNFP";
-                    default -> "모름";
-                };
-        return rs;
+
+        return switch(name) {
+            //여러줄은 써야 하는경우 {  }
+            case "홍길동" -> {
+                char k = 'J';
+                yield "ENF"+k;
+            }
+            case "홍길순" -> "FNFP";
+            case "임꺽정","신짱구" -> "FNFP";
+            default -> "모름";
+        };
     }
 
+    @GetMapping("/saveSession/{name}/{value}")
+    @ResponseBody
+    public String saveSession(@PathVariable String name,@PathVariable String value, HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        session.setAttribute(name, value);
+        return "세션 변수의 %s 값이 %s로 설정 되었습니다".formatted(name, value);
+    }
 
+    @GetMapping("/getSession/{name}")
+    @ResponseBody
+    public String getSession(@PathVariable String name,HttpSession session) {
+        String age = (String) session.getAttribute("age");
+        return "세션의 %s값은 %s입니다".formatted(name,age);
+
+    }
+
+    @GetMapping("/home/returnList")
+    @ResponseBody
+    public List<String> showList() {
+        List<String> list = new ArrayList<>() {{
+             add("안녕");
+             add("반가원");
+             add("어서와");
+        }};
+
+        List<String> list2 = new ArrayList<>(List.of("안녕","반가워","어서와"));
+        return list;
+    }
+
+    @GetMapping("/home/returnMap")
+    @ResponseBody
+    public Map<String, Object> showReturnMap() {
+        Map<String,Object> map = new LinkedHashMap<>();
+        map.put("id", 1);
+        map.put("age", 5);
+        map.put("name", "푸바오");
+        map.put("related", new ArrayList<>(){{
+            add(1);
+            add(2);
+            add(3);
+        }});
+    return map;
+    }
+
+    @GetMapping("/home/returnAnimal")
+    @ResponseBody
+    public Animal showAnimal() {
+        Animal animal = new Animal(1, 5, "포비",
+                new ArrayList<>() {{
+                    add(1);
+                    add(2);
+                    add(3);
+                }}
+        );
+        System.out.println(animal+"aaaa");
+        return animal;
+    }
+
+    @GetMapping("/home/returnAnimalV2")
+    @ResponseBody
+    public AnimalV2 showAnimal2() {
+        AnimalV2 animal = new AnimalV2(1, 5, "포비",
+                new ArrayList<>() {{
+                    add(1);
+                    add(2);
+                    add(3);
+                }}
+        );
+        animal.setName(animal.getName());
+        System.out.println(animal);
+        return animal;
+    }
+
+    @GetMapping("/home/returnAnimalMapList")
+    @ResponseBody
+    public List<Map<String,Object>> showMapList() {
+        Map<String,Object> animalmap1 = new LinkedHashMap<>();
+        animalmap1.put("id", 1);
+        animalmap1.put("age", 5);
+        animalmap1.put("name", "푸바오");
+        animalmap1.put("related", new ArrayList<>(){{
+            add(1);
+            add(2);
+            add(3);
+        }});
+
+        Map<String,Object> animalmap2 = new LinkedHashMap<>();
+        animalmap2.put("id", 2);
+        animalmap2.put("age", 10);
+        animalmap2.put("name", "푸바오2");
+        animalmap2.put("related", new ArrayList<>(){{
+            add(4);
+            add(5);
+            add(6);
+        }});
+
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        mapList.add(animalmap1);
+        mapList.add(animalmap2);
+
+
+        mapList.forEach(l -> System.out.println(l.get("id")));
+        return mapList;
+    }
+
+    @GetMapping("/home/returnAnimalListV2")
+    @ResponseBody
+    public List<AnimalV2> showAnimalList2() {
+        AnimalV2 animal = new AnimalV2(1, 5, "포비",
+                new ArrayList<>() {{
+                    add(1);
+                    add(2);
+                    add(3);
+                }}
+        );
+
+        AnimalV2 anima2 = new AnimalV2(2, 10, "포비2",
+                new ArrayList<>() {{
+                    add(4);
+                    add(5);
+                    add(6);
+                }}
+        );
+        List<AnimalV2> animalV2List = new ArrayList<>();
+        animalV2List.add(animal);
+        animalV2List.add(anima2);
+
+        return animalV2List;
+    }
+}
+
+
+
+
+class Animal {
+    private final int id;
+    private final int age;
+    private final String name;
+    private final List related;
+
+    public Animal(int id, int age, String name, List related) {
+        this.id = id;
+        this.age = age;
+        this.name = name;
+        this.related = related;
+    }
+
+    @Override
+    public String toString() {
+        return "Animal{" +
+                "id=" + id +
+                ", age=" + age +
+                ", name='" + name + '\'' +
+                ", related=" + related +
+                '}';
+    }
+}
+
+@AllArgsConstructor
+@Data
+@ToString
+class AnimalV2 {
+    private  int id;
+    private  int age;
+    private  String name;
+    private  List related;
 
 }
