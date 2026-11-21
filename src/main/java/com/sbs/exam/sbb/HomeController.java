@@ -293,6 +293,19 @@ public class HomeController {
     public List<Article> getArticles() {
         return articles;
     }
+
+
+    @GetMapping("/article/detail/{id}")
+    @ResponseBody
+    public Article getArticle(@PathVariable int id) {
+        System.out.println("여기오나?1");
+        Article article = articles.stream()
+                .filter(s-> s.getId() == id)
+                .findFirst()
+                .orElse(null);
+        System.out.println("여기오나?2");
+        return article;
+    }
 }
 
 
