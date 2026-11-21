@@ -35,6 +35,8 @@ dependencies {
 	// Spring Data JPA (Hibernate 및 JDBC/HikariCP 포함)
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 
 }
 
