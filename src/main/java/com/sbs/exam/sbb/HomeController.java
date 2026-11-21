@@ -30,7 +30,14 @@ public class HomeController {
 
     public HomeController() {
         this.num = -1;
-        this.articles = new ArrayList<>();
+        this.articles = new ArrayList<>() {{
+            add(new Article("제목입니다1", "내용입니다1"));
+            add(new Article("제목입니다2", "내용입니다2"));
+            add(new Article("제목입니다3", "내용입니다3"));
+            add(new Article("제목입니다4", "내용입니다4"));
+            add(new Article("제목입니다5", "내용입니다5"));
+            add(new Article("제목입니다6", "내용입니다6"));
+        }};
     }
 
     @RequestMapping("/sbb")
@@ -305,6 +312,30 @@ public class HomeController {
                 .orElse(null);
         System.out.println("여기오나?2");
         return article;
+    }
+    @GetMapping("/article/modify/{id}")
+    @ResponseBody
+    public String editArticle(@PathVariable int id,  String title,  String body) {
+
+        Article article = articles.stream()
+                .filter(s-> s.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if(article == null) {
+            return "%d 게시물은 존재하지 않습니다".formatted(id);
+        }
+        if(title.length() == 0 || title == null) {
+            return "제목을 입력하세요";
+        }
+        if(body.length() == 0 || body == null) {
+            return "내용을 입력하세요";
+        }
+        article.setTitle(title);
+
+        article.setBody(body);
+
+        return "%d 게시물이 수정 되었습니다".formatted(article.getId());
     }
 }
 
