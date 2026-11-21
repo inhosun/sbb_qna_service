@@ -1,14 +1,20 @@
 package com.sbs.exam.sbb;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@AllArgsConstructor
 @Entity
 @Builder
+@Getter
+@NoArgsConstructor
 public class Question {
 
     @Id
