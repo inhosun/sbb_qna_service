@@ -3,11 +3,11 @@ package com.sbs.exam.sbb;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.converter.json.GsonBuilderUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +25,7 @@ import java.util.stream.IntStream;
 public class HomeController {
 
     private int num;
+
 
     private List<Article> articles;
 
@@ -355,6 +356,22 @@ public class HomeController {
         return deleted ? "%d 게시물이 삭제 되었습니다".formatted(id) : "%d 게시물은 존재하지 않습니다".formatted(id);
     }
 
+    @GetMapping("/person/addpersonoldway")
+    @ResponseBody
+    public Person addPerson(int id, String name, int age) {
+        Person p = new Person(2, "홍길동", 25);
+        return p;
+
+    }
+
+    @GetMapping("/person/addperson")
+    @ResponseBody
+    public Person addPerson(Person p) {
+
+        return p;
+
+    }
+
 }
 
 
@@ -413,3 +430,15 @@ class Article {
     }
 
 }
+
+@Getter
+@Setter
+@AllArgsConstructor
+@ToString
+class Person {
+    private int id;
+    private String name;
+    private int age;
+
+}
+
