@@ -34,8 +34,16 @@ class SbbApplicationTests {
 				.answerList(null)
 				.build();
 
+		Question q3 = Question.builder()
+				.subject("sbb가 무엇인가?")
+				.content("sbb로 시작하기")
+				.createDate(LocalDateTime.now())
+				.answerList(null)
+				.build();
+
 		questionRepository.save(q1);
 		questionRepository.save(q2);
+		questionRepository.save(q3);
 	}
 	@Test
 	void testJpa() {
@@ -67,6 +75,14 @@ class SbbApplicationTests {
 
 		Question question = questionRepository.findBySubjectAndContent("제목1", "내용1");
 		assertEquals("제목1", question.getSubject());
+
+	}
+
+	@Test
+	void testJpa5() {
+
+		List<Question> question = questionRepository.findBySubjectLike("sbb%");
+		assertEquals("sbb가 무엇인가?", question.get(0).getSubject());
 
 	}
 }
