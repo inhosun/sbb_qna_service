@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class SbbApplicationTests {
@@ -90,15 +91,23 @@ class SbbApplicationTests {
 	@Test
 	void testJpa6() {
 		Optional<Question> question = questionRepository.findById(5);
-
 		Question q1 =  question.orElseGet(null);
-
 		q1.setSubject("제목1을 바꿨어요");
 		q1.setContent("내용1을 바꿨어요");
-
 		questionRepository.save(q1);
+	}
 
+	@Test
+	void testJpa7() {
+		assertEquals(3, questionRepository.count());
+		Optional<Question> q1 = questionRepository.findById(6);
+		assertTrue(q1.isPresent());
+		Question question = q1.get();
+		questionRepository.delete(question);
+		assertEquals(2, questionRepository.count());
 
+		questionRepository.delete(questionRepository.findById(7).orElse(null));
+		assertEquals(1, questionRepository.count());
 
 	}
 }
