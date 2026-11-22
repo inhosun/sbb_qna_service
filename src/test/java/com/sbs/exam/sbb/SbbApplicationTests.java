@@ -49,7 +49,9 @@ class SbbApplicationTests {
 	}
 	@Test
 	void testJpa0() {
+		questionRepository.disalbleForeignKey();
 		questionRepository.truncate();
+		questionRepository.ensalbleForeignKey();
 	}
 	@Test
 	void testJpa() {

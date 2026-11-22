@@ -14,6 +14,17 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     @Query(value = "truncate question", nativeQuery = true)
     void truncate();
 
+    @Transactional
+    @Modifying //생략가능
+    @Query(value = "SET FOREIGN_KEY_CHECKS = 0", nativeQuery = true)
+    void disalbleForeignKey();
+
+    @Transactional
+    @Modifying //생략가능
+    @Query(value = "SET FOREIGN_KEY_CHECKS = 1", nativeQuery = true)
+    void ensalbleForeignKey();
+
+
     Question findBySubject(String subject);
 
     Question findByContent(String content);
