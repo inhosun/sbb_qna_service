@@ -48,6 +48,10 @@ class SbbApplicationTests {
 		questionRepository.save(q3);
 	}
 	@Test
+	void testJpa0() {
+		questionRepository.truncate();
+	}
+	@Test
 	void testJpa() {
 		List<Question> questionList = questionRepository.findAll();
 		assertEquals(2, questionList.size());
